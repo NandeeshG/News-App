@@ -7,6 +7,7 @@ Organise news based on categories.
 Built using NuxtJS, Axios, Vuetify
 
 ![USA SS](https://github.com/NandeeshG/News-App/blob/main/screenshots/ss_usa.png?raw=true)
+![Zoomed SS](https://github.com/NandeeshG/News-App/blob/main/screenshots/ss_zoom.png?raw=true)
 
 ## Build Setup
 
