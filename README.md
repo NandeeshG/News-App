@@ -1,5 +1,11 @@
 # news_app
 
+News App build using newsapi.
+Fetch news from a selected country or from the whole planet.
+Organise news based on categories.
+
+Built using NuxtJS, Axios, Vuetify
+
 ## Build Setup
 
 ```bash

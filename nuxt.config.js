@@ -31,7 +31,7 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [],
+  modules: ['@nuxtjs/axios'],
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
@@ -48,10 +48,23 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
         },
+        light: {
+          primary: colors.purple,
+          secondary: colors.grey.darken1,
+          accent: colors.shades.black,
+          error: colors.red.accent3,
+        },
       },
     },
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
+
+  axios: {
+    baseURL: 'https://newsapi.org',
+  },
+  env: {
+    apikey: '0ef0630cffac49cc9e2b295ecad48834',
+  },
 }

@@ -1,93 +1,175 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" clipped fixed app>
+      <v-list nav>
+        <v-list-item>
+          <v-list-item-title> Change Country to </v-list-item-title>
+        </v-list-item>
+        <v-divider />
+        <v-list-item
+          v-for="(item, i) in countries"
+          :key="i"
+          @click="fetchNews(i, selectedCategory)"
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.name" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-footer fixed>
+        <v-chip nuxt to="/about"> Made by Nandeesh </v-chip>
+      </v-footer>
+    </v-navigation-drawer>
+
+    <v-app-bar clipped-left fixed app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-spacer />
+      <v-toolbar-title class="orange--text" v-text="title" />
+      <v-spacer />
+      <v-icon>{{ countries[selectedCountry].icon }}</v-icon>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <v-row justify="space-around">
+          <v-col cols="8" sm="8" md="8" lg="8">
+            <v-chip-group :show-arrows="true">
+              <v-chip
+                v-for="(cats, id) in categories"
+                :key="id"
+                large
+                outlined
+                ripple
+                active-class="primary--text"
+                @click="fetchNews(selectedCountry, id)"
+              >
+                {{ cats }}
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <v-card
+        v-for="(art, id) in articles"
+        :key="id"
+        class="mx-auto ma-4"
+        max-width="400"
+      >
+        <v-img
+          class="white--text align-end"
+          height="200px"
+          :src="
+            art.urlToImage ||
+            'https://www.hotel.de/xx/assets/hotel-de/img/layout/missing-room.png'
+          "
+        >
+        </v-img>
+
+        <v-card-text class="text--primary">
+          {{ art.title }}
         </v-card-text>
+
         <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
+          <v-btn color="orange" text :href="art.url" target="_blank">
+            Read More
+          </v-btn>
         </v-card-actions>
       </v-card>
-    </v-col>
-  </v-row>
+
+      <v-snackbar v-model="showError">
+        There was some problem... Try again
+        <v-btn dark class="ma-2" @click.native="showError = false">Close</v-btn>
+      </v-snackbar>
+    </v-main>
+
+    <v-footer fixed app>
+      <span class="orange--text"> CONNECT AT -> </span>
+      <v-spacer />
+      <v-btn
+        v-for="(sm, id) in social"
+        :key="id"
+        icon
+        :href="sm.url"
+        target="_blank"
+      >
+        <v-icon>{{ sm.icon }}</v-icon>
+      </v-btn>
+      <v-spacer />
+      <span class="orange--text">{{ new Date().toDateString() }}</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
+/* eslint-disable no-console */
 export default {
-  components: {
-    Logo,
-    VuetifyLogo,
+  data() {
+    return {
+      drawer: false,
+      title: 'NEWS VIEWS',
+      articles: [],
+      social: [
+        { icon: 'mdi-twitter', url: 'https://www.twitter.com/' },
+        { icon: 'mdi-facebook', url: 'https://www.facebook.com/' },
+        { icon: 'mdi-github', url: 'https://www.github.com/' },
+        { icon: 'mdi-youtube', url: 'https://www.youtube.com/' },
+        { icon: 'mdi-instagram', url: 'https://www.instagram.com/' },
+        { icon: 'mdi-reddit', url: 'https://www.reddit.com/' },
+      ],
+      selectedCountry: 0,
+      countries: [
+        { icon: '🌍', name: 'Global', code: '' },
+        { icon: '🇮🇳', name: 'India', code: 'in' },
+        { icon: '🇯🇵', name: 'Japan', code: 'jp' },
+        { icon: '🇺🇸', name: 'USA', code: 'us' },
+        { icon: '🇬🇧', name: 'UK', code: 'gb' },
+        { icon: '🇫🇷', name: 'France', code: 'fr' },
+      ],
+      selectedCategory: 0,
+      categories: [
+        'general',
+        'business',
+        'entertainment',
+        'health',
+        'science',
+        'sports',
+        'technology',
+      ],
+      showError: false,
+    }
+  },
+  methods: {
+    async fetchNews(cnt, cat) {
+      this.selectedCountry = cnt
+      this.selectedCategory = cat
+      const apikey = process.env.apikey
+      const url = `/v2/top-headlines?${
+        this.selectedCountry === 0
+          ? ''
+          : `country=${this.countries[this.selectedCountry].code}&`
+      }category=${this.categories[this.selectedCategory]}&apiKey=${apikey}`
+      // console.log(this.selectedCountry)
+      // console.log(this.selectedCategory)
+      // console.log(url)
+      try {
+        const res = await this.$axios.get(url)
+        this.articles = res.data.articles
+        console.log(this.articles[0])
+      } catch (err) {
+        this.showError = true
+        this.articles = []
+      }
+    },
+  },
+  head() {
+    const title = `NV | ${this.countries[this.selectedCountry].name}`
+    return {
+      title,
+    }
   },
 }
 </script>
