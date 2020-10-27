@@ -67,4 +67,8 @@ export default {
   env: {
     apikey: '0ef0630cffac49cc9e2b295ecad48834',
   },
+  server: {
+    port: 3000,
+    host: 'localhost',
+  },
 }

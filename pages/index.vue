@@ -113,12 +113,15 @@ export default {
       title: 'NEWS VIEWS',
       articles: [],
       social: [
-        { icon: 'mdi-twitter', url: 'https://www.twitter.com/' },
-        { icon: 'mdi-facebook', url: 'https://www.facebook.com/' },
-        { icon: 'mdi-github', url: 'https://www.github.com/' },
-        { icon: 'mdi-youtube', url: 'https://www.youtube.com/' },
-        { icon: 'mdi-instagram', url: 'https://www.instagram.com/' },
-        { icon: 'mdi-reddit', url: 'https://www.reddit.com/' },
+        {
+          icon: 'mdi-github',
+          url: 'https://www.github.com/NandeeshG/News-App',
+        },
+        {
+          icon: 'mdi-linkedin',
+          url: 'https://www.linkedin.com/in/nandeesh-gupta-05b43014a/',
+        },
+        { icon: 'mdi-twitter', url: 'https://www.twitter.com/NewsAPIorg' },
       ],
       selectedCountry: 0,
       countries: [
