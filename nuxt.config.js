@@ -71,4 +71,5 @@ export default {
     port: 3000,
     host: 'localhost',
   },
+  target: 'static', // default is 'server'
 }
